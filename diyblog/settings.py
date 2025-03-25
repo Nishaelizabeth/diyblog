@@ -29,7 +29,7 @@ DEBUG = True
 ALLOWED_HOSTS = ['diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net",
+    "https://diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net"
 ]
 # Application definition
 
