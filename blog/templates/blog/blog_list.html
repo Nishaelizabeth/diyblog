@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h1>Blog Posts</h1>
+    {% if user.is_authenticated %}
+    <a href="{% url 'create-blog' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Create New Post
+    </a>
+    {% endif %}
+</div>
+
+{% if blog_list %}
+<div class="row">
+    {% for blog in blog_list %}
+    <div class="col-md-12 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'blog-detail' blog.pk %}" class="text-decoration-none">{{ blog.title }}</a>
+                </h5>
+                <h6 class="card-subtitle mb-2 text-muted">
+                    By <a href="{% url 'blogger-detail' blog.author.pk %}" class="text-decoration-none">{{ blog.author }}</a>
+                    on {{ blog.post_date|date:"F j, Y" }}
+                </h6>
+                <p class="card-text">{{ blog.content|truncatewords:50 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <i class="fas fa-heart"></i> {{ blog.total_likes }} likes
+                        <i class="fas fa-comment ms-3"></i> {{ blog.comments.count }} comments
+                    </div>
+                    <a href="{% url 'blog-detail' blog.pk %}" class="btn btn-primary">Read More</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% if is_paginated %}
+<nav aria-label="Page navigation">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.previous_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Previous</a>
+        </li>
+        {% endif %}
+
+        {% for num in page_obj.paginator.page_range %}
+        {% if page_obj.number == num %}
+        <li class="page-item active">
+            <span class="page-link">{{ num }}</span>
+        </li>
+        {% else %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ num }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">{{ num }}</a>
+        </li>
+        {% endif %}
+        {% endfor %}
+
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link" href="?page={{ page_obj.next_page_number }}{% if request.GET.q %}&q={{ request.GET.q }}{% endif %}">Next</a>
+        </li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+
+{% else %}
+<div class="text-center">
+    <p class="lead">There are no blog posts yet.</p>
+    {% if user.is_authenticated %}
+    <a href="{% url 'create-blog' %}" class="btn btn-primary">
+        <i class="fas fa-plus me-2"></i>Write Your First Post
+    </a>
+    {% else %}
+    <p>Please <a href="{% url 'login' %}">login</a> to create a post.</p>
+    {% endif %}
+</div>
+{% endif %}
+{% endblock %}

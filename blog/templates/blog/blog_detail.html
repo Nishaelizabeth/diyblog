@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block content %}
+<article class="blog-post">
+    <h1 class="blog-post-title">{{ blog.title }}</h1>
+    <p class="blog-post-meta">
+        {{ blog.post_date|date:"F j, Y" }} by
+        <a href="{% url 'blogger-detail' blog.author.pk %}">{{ blog.author }}</a>
+    </p>
+
+    <div class="blog-content mb-4">
+        {{ blog.content }}
+    </div>
+
+    <div class="d-flex align-items-center mb-4">
+        <span class="like-count me-2">{{ blog.total_likes }} likes</span>
+        {% if user.is_authenticated %}
+        <i class="fas fa-heart like-btn {% if user in blog.likes.all %}liked{% endif %}" 
+           data-blog-id="{{ blog.pk }}"></i>
+        {% endif %}
+    </div>
+
+    <h3>Comments</h3>
+    {% if blog.comments.all %}
+    <div class="comments-section mb-4">
+        {% for comment in blog.comments.all %}
+        <div class="card mb-3">
+            <div class="card-body">
+                <h6 class="card-subtitle mb-2 text-muted">{{ comment.author }} on {{ comment.post_date|date:"F j, Y" }}</h6>
+                <p class="card-text">{{ comment.description }}</p>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <p>No comments yet.</p>
+    {% endif %}
+
+    {% if user.is_authenticated %}
+    <div class="comment-form">
+        <h4>Add a comment</h4>
+        <form method="POST" action="{% url 'add-comment' blog.pk %}">
+            {% csrf_token %}
+            <div class="mb-3">
+                {{ form.description }}
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+    {% else %}
+    <p>Please <a href="{% url 'login' %}?next={{ request.path }}">login</a> to add a comment.</p>
+    {% endif %}
+</article>
+{% endblock %}
+
+{% block scripts %}
+<script>
+$(document).ready(function() {
+    $('.like-btn').click(function() {
+        var blogId = $(this).data('blog-id');
+        var likeBtn = $(this);
+        var likeCount = $('.like-count');
+
+        $.ajax({
+            url: '/blog/' + blogId + '/like/',
+            type: 'POST',
+            headers: {
+                'X-CSRFToken': '{{ csrf_token }}'
+            },
+            success: function(response) {
+                likeBtn.toggleClass('liked');
+                likeCount.text(response.likes_count + ' likes');
+            }
+        });
+    });
+});
+</script>
+{% endblock %}

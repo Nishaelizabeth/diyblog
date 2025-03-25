@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-8 offset-md-2">
+        <div class="card">
+            <div class="card-body">
+                <h2 class="card-title">Profile Settings</h2>
+                <form method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="mb-3">
+                        <label for="{{ u_form.username.id_for_label }}" class="form-label">Username</label>
+                        {{ u_form.username }}
+                        {% if u_form.username.errors %}
+                            <div class="alert alert-danger">
+                                {{ u_form.username.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ u_form.email.id_for_label }}" class="form-label">Email</label>
+                        {{ u_form.email }}
+                        {% if u_form.email.errors %}
+                            <div class="alert alert-danger">
+                                {{ u_form.email.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="{{ b_form.bio.id_for_label }}" class="form-label">Bio</label>
+                        {{ b_form.bio }}
+                        {% if b_form.bio.errors %}
+                            <div class="alert alert-danger">
+                                {{ b_form.bio.errors }}
+                            </div>
+                        {% endif %}
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Update Profile</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div class="col-md-4">
+        <div class="card mb-4">
+            <div class="card-body">
+                <h1 class="card-title">{{ blogauthor.user.username }}</h1>
+                <p class="card-text">{{ blogauthor.bio }}</p>
+                <div class="text-muted">
+                    <p>Member since: {{ blogauthor.user.date_joined|date:"F j, Y" }}</p>
+                    <p>Total posts: {{ blogs.count }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-8">
+        <h2>Blog Posts</h2>
+        {% if blogs %}
+            {% for blog in blogs %}
+            <div class="card mb-3">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{% url 'blog-detail' blog.pk %}" class="text-decoration-none">{{ blog.title }}</a>
+                    </h5>
+                    <h6 class="card-subtitle mb-2 text-muted">{{ blog.post_date|date:"F j, Y" }}</h6>
+                    <p class="card-text">{{ blog.content|truncatewords:30 }}</p>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                            <i class="fas fa-heart"></i> {{ blog.total_likes }} likes
+                            <i class="fas fa-comment ms-3"></i> {{ blog.comments.count }} comments
+                        </div>
+                        <a href="{% url 'blog-detail' blog.pk %}" class="btn btn-primary">Read More</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        {% else %}
+            <p>No blog posts yet.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

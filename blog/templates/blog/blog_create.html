@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Create Blog Post{% endblock %}
+
+{% block content %}
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title mb-4">Create New Blog Post</h2>
+                    <form method="post" class="blog-form">
+                        {% csrf_token %}
+                        <div class="mb-4">
+                            <label for="{{ form.title.id_for_label }}" class="form-label h5">Title</label>
+                            {{ form.title }}
+                            {% if form.title.errors %}
+                            <div class="alert alert-danger mt-2">
+                                {{ form.title.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="mb-4">
+                            <label for="{{ form.content.id_for_label }}" class="form-label h5">Content</label>
+                            <div class="content-editor">
+                                {{ form.content }}
+                            </div>
+                            {% if form.content.errors %}
+                            <div class="alert alert-danger mt-2">
+                                {{ form.content.errors }}
+                            </div>
+                            {% endif %}
+                        </div>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <a href="{% url 'blogs' %}" class="btn btn-outline-secondary">Cancel</a>
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-paper-plane me-2"></i>Publish Post
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            
+            <!-- Writing Tips Card -->
+            <div class="card shadow mt-4">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <i class="fas fa-lightbulb text-warning me-2"></i>Writing Tips
+                    </h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Keep your title clear and engaging
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Break your content into paragraphs for better readability
+                        </li>
+                        <li class="mb-2">
+                            <i class="fas fa-check text-success me-2"></i>
+                            Use examples to illustrate your points
+                        </li>
+                        <li>
+                            <i class="fas fa-check text-success me-2"></i>
+                            Proofread before publishing
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+.content-editor {
+    border: 1px solid #dee2e6;
+    border-radius: 0.25rem;
+    padding: 1rem;
+    background-color: #fff;
+}
+
+.content-editor textarea {
+    border: none;
+    width: 100%;
+    min-height: 300px;
+    resize: vertical;
+}
+
+.content-editor textarea:focus {
+    outline: none;
+    box-shadow: none;
+}
+
+.blog-form label {
+    font-weight: 500;
+    color: #495057;
+}
+
+.card {
+    border: none;
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+</style>
+{% endblock %}

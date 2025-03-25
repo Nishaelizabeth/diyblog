@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>Our Bloggers</h1>
+
+{% if blogauthor_list %}
+<div class="row">
+    {% for blogger in blogauthor_list %}
+    <div class="col-md-6 mb-4">
+        <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    <a href="{% url 'blogger-detail' blogger.pk %}" class="text-decoration-none">{{ blogger.user.username }}</a>
+                </h5>
+                <p class="card-text">{{ blogger.bio|truncatewords:30 }}</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">{{ blogger.blog_set.count }} posts</small>
+                    <a href="{% url 'blogger-detail' blogger.pk %}" class="btn btn-primary">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<p>There are no bloggers yet.</p>
+{% endif %}
+{% endblock %}
