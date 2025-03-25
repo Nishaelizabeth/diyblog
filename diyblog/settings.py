@@ -26,10 +26,10 @@ SECRET_KEY = 'django-insecure-bua#+ojjtj12@3%_g$wcg2(*=u)guop#uk3-^foomretxbu2h5
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net/', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net', 'localhost', '127.0.0.1']
 
 CSRF_TRUSTED_ORIGINS = [
-    "https://diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net/",
+    "https://diyblogpost-h9fxdfc3buh8hbaw.centralus-01.azurewebsites.net",
 ]
 # Application definition
 
